@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  spoiler_bot:
+    container_name: spoiler_bot
+    build: .
+    volumes:
+      - ./env.json:/app/env.json
+      - /app/
