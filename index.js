@@ -64,8 +64,15 @@ client.on("messageCreate",async msg=>{
     if(msg.attachments.size>0){
         msg.attachments.forEach(a=>{
             if(a.name.toLowerCase().endsWith("spoilerlog.xml")){
-                fetch(a.url).then(d=>d.text()).then(d=>{
+                fetch(a.url).then(async d=>{
+                        d=await d.text();
+                        return d.replaceAll(/\<junk\shunt\shere\>/ig,"Junk Hint Here");
+                    }).then(d=>{
                     parseString(d, (e,result)=>{
+                        if(result===undefined||result===null){
+                            msg.reply(`An error has occured.\n\n${e}`);
+                            return;
+                        }
                         result.poster=msg.author.id;
                         fs.writeFileSync("./latestSpoiler.json",JSON.stringify(result));
                         msg.reply({
