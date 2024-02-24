@@ -8,7 +8,7 @@ function save(){
 }
 function searchLog(term){
     if(term?.length===0) term=null;
-    var slog=require("./latestSpoiler.json");
+    var slog=JSON.parse(fs.readFileSync("./latestSpoiler.json",'utf-8'));
     var locs=[];
     slog["spoiler-log"]["all-locations"][0].location.forEach(location=>{
         locs.push({
@@ -66,7 +66,7 @@ client.on("messageCreate",async msg=>{
             if(a.name.toLowerCase().endsWith("spoilerlog.xml")){
                 fetch(a.url).then(async d=>{
                         d=await d.text();
-                        return d.replaceAll(/\<junk\shunt\shere\>/ig,"Junk Hint Here");
+                        return d.replace(/\<junk\shunt\shere\>/ig,"Junk Hint Here");
                     }).then(d=>{
                     parseString(d, (e,result)=>{
                         if(result===undefined||result===null){
