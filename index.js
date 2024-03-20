@@ -1,5 +1,6 @@
 process.env=require("./env.json");
 const fs=require("fs");
+const fetch=require("node-fetch");
 var commands=require("./commands.json");
 var parseString = require('xml2js').parseString;
 var config=require("./comms.json");
