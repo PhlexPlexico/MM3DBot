@@ -13,4 +13,8 @@ services:
         source: ./latestSpoiler.json
         target: /app/latestSpoiler.json
         read_only: false
+      - type: bind
+        source: ./comms.json
+        target: /app/comms.json
+        read_only: false
 
