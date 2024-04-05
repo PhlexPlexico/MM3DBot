@@ -4,12 +4,13 @@ const fetch=require("node-fetch");
 var commands=require("./commands.json");
 var parseString = require('xml2js').parseString;
 var config=require("./comms.json");
+var saved=require("./latestSpoiler.json");
 function save(){
     fs.writeFileSync("./comms.json",JSON.stringify(config));
 }
 function searchLog(term){
     if(term?.length===0) term=null;
-    var slog=JSON.parse(fs.readFileSync("./latestSpoiler.json",'utf-8'));
+    var slog=structuredClone(saved);
     var locs=[];
     slog["spoiler-log"]["all-locations"][0].location.forEach(location=>{
         locs.push({
@@ -76,6 +77,7 @@ client.on("messageCreate",async msg=>{
                         }
                         result.poster=msg.author.id;
                         fs.writeFileSync("./latestSpoiler.json",JSON.stringify(result));
+                        saved=structuredClone(result);
                         msg.reply({
                             content:`Spoiler Log Parsed. To search this log, use ${commands.hint}. To search this log after another log is uploaded, upload this log to the ${commands.hint} \`file\` option.`,
                             allowedMentions:{parse:[]},
@@ -159,6 +161,7 @@ client.on("interactionCreate",async cmd=>{
                     parseString(d,(e,result)=>{
                         result.poster=cmd.user.id;
                         fs.writeFileSync("./latestSpoiler.json",JSON.stringify(result));
+                        saved=structuredClone(result);
                     });
                 });
             }
