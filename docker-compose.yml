@@ -5,5 +5,12 @@ services:
     container_name: spoiler_bot
     build: .
     volumes:
-      - ./env.json:/app/env.json
-      - /app/
+      - type: bind
+        source: ./env.json
+        target: /app/env.json
+        read_only: true
+      - type: bind
+        source: ./latestSpoiler.json
+        target: /app/latestSpoiler.json
+        read_only: false
+
